@@ -1,10 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useHistory } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
 import * as Yup from 'yup';
 
 import { AuthParams } from '../api/constants';
-import api from '../api/api';
+import api from '../api';
 
 interface AuthFormValues {
 	email: string;
@@ -33,8 +34,12 @@ const AuthPage: React.FunctionComponent<AuthProps> = (props: AuthProps) => {
 						// TODO: fix typings
 						const responseOnLogin: any = await api.login(values);
 						if (responseOnLogin.status === 201) {
-							const { data: access_token } = responseOnLogin;
+							const { data: { access_token } } = responseOnLogin;
+							const { email }: { email: string } = jwt_decode(access_token);
+							
+							localStorage.setItem("user_email", email);
 							localStorage.setItem("access_token", access_token); 
+							
 							history.push('/dashboard');
 						}
 						return;

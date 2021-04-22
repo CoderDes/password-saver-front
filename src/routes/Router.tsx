@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import AuthPage from '../pages/Auth';
+import Dashboard from '../pages/Dashboard';
 import NotFound from '../pages/NotFound';
 
 const Router: React.FunctionComponent = () => (
@@ -16,7 +17,7 @@ const Router: React.FunctionComponent = () => (
 				<AuthPage isLogin={false} />
 			</Route>
 			<Route exact path='/dashboard'>
-				{/* Dashboard */}
+				<Dashboard />
 			</Route>
 			<Route path="*" exact={true}>
 				<NotFound />
