@@ -11,3 +11,12 @@ export interface IUser {
 	email: string;
 	records: IRecord[],
 }
+
+export interface IRootState {
+	userData: IUser;
+}
+
+export interface IAuth {
+	email: string;
+	password: string;
+}

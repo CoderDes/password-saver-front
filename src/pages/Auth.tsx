@@ -4,7 +4,11 @@ import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import * as Yup from 'yup';
 
-import { AuthParams } from '../api/constants';
+import { 
+	ACCESS_TOKEN_KEY_IN_LC, 
+	USER_EMAIL_KEY_IN_LC 
+} from '../constants/index';
+import { IAuth } from '../interfaces/index';
 import api from '../api';
 
 interface AuthFormValues {
@@ -29,7 +33,7 @@ const AuthPage: React.FunctionComponent<AuthProps> = (props: AuthProps) => {
 			</h1>
 			<Formik
 				initialValues={initialValues}
-				onSubmit={async (values: AuthParams, actions: object) => {
+				onSubmit={async (values: IAuth, actions: object) => {
 					if (props.isLogin) {
 						// TODO: fix typings
 						const responseOnLogin: any = await api.login(values);
@@ -37,8 +41,8 @@ const AuthPage: React.FunctionComponent<AuthProps> = (props: AuthProps) => {
 							const { data: { access_token } } = responseOnLogin;
 							const { email }: { email: string } = jwt_decode(access_token);
 							
-							localStorage.setItem("user_email", email);
-							localStorage.setItem("access_token", access_token); 
+							localStorage.setItem(USER_EMAIL_KEY_IN_LC, email);
+							localStorage.setItem(ACCESS_TOKEN_KEY_IN_LC, access_token); 
 							
 							history.push('/dashboard');
 						}
