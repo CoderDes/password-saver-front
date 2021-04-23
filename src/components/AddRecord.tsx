@@ -27,12 +27,15 @@ const AddRecords: React.FunctionComponent = () => {
 		e.preventDefault();
 		const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY_IN_LC);
 
-		dispatch(saveRecord({
+		await dispatch(saveRecord({
 			title: titleVal,
 			password: crypter.encrypt(passVal),
 			userId,
 			accessToken,
 		}));
+
+		setTitleValue('');
+		setPassVal('');
 	}
  
 	return (
