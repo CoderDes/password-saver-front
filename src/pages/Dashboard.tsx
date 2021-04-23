@@ -2,9 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 import Table from '../components/Table';
 import api from '../api';
+import { IUser } from '../interfaces/index';
 
 const Dashboard: React.FunctionComponent = () => {
-	const [userInfo, setUserInfo] = useState(null);
+	const initialUserState: IUser = {
+		_id: '',
+		email: '',
+		records: [],
+	}
+	const [userInfo, setUserInfo] = useState(initialUserState);
 
 	useEffect(() => {
 		(async function() {
@@ -15,15 +21,15 @@ const Dashboard: React.FunctionComponent = () => {
 				return;
 			}
 
-			const { data: userData } = await api.getUserInfo({ email: userEmail, accessToken: token });
-			setUserInfo(userData);
+			const { data } = await api.getUserInfo({ email: userEmail, accessToken: token });
+			setUserInfo(data);
 		})();
 	}, []);
 
 	return (
 		<React.Fragment>
 			<h1>Dashboard</h1>
-			<Table />
+			<Table records={userInfo.records} />
 		</React.Fragment>
 	)
 }
