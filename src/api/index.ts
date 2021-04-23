@@ -5,7 +5,7 @@ import {
 	RECORD_URI,
 } from '../constants/index';
 import { IAuth } from '../interfaces/index';
-import { GetUserInfoDto, RecordSaveDto } from '../dto/index';
+import { GetUserInfoDto, RecordSaveDto, RecordUpdateDto, RecordDeleteDto } from '../dto/index';
 import axios, { AxiosResponse } from 'axios';
 
 export class Api {
@@ -30,6 +30,19 @@ export class Api {
 		const { title, password, userId, accessToken } = dto;
 
 		return await axios.post(`${RECORD_URI}/new`, {title, password, userId}, {
+			headers: {
+				'Authorization': `Bearer ${accessToken}`,
+			}
+		});
+	}
+
+	async updateRecord(dto: RecordUpdateDto): Promise<AxiosResponse<any>> {
+		return await axios.patch(`${RECORD_URI}/${dto.recordId}/update`, dto);
+	}
+
+	async deleteRecord(dto: RecordDeleteDto): Promise<AxiosResponse<any>> {
+		const { id, accessToken } = dto;
+		return await axios.delete(`${RECORD_URI}/${id}/delete`, {
 			headers: {
 				'Authorization': `Bearer ${accessToken}`,
 			}
