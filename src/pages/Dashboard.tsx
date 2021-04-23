@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Table from '../components/Table';
 import { fetchUserData } from '../redux/user.slice';
@@ -7,6 +8,7 @@ import { ACCESS_TOKEN_KEY_IN_LC, USER_EMAIL_KEY_IN_LC} from '../constants/index'
 import { IRootState } from '../interfaces';
 
 const Dashboard: React.FunctionComponent = () => {
+	const history = useHistory();
 	const dispatch = useDispatch();
 	const userStoreData = useSelector((state: IRootState) => state.userData);
 
@@ -14,6 +16,9 @@ const Dashboard: React.FunctionComponent = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
+		if (localStorage.getItem(ACCESS_TOKEN_KEY_IN_LC) === null) {
+			history.push('/');
+		}
 		handleFetchData();
 	}, []);
 
