@@ -1,39 +1,57 @@
 import React, { MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { deleteRecord } from '../redux/user.slice';
+import crypter from '../service/crypter';
+import { updateRecord, deleteRecord } from '../redux/user.slice';
 import { ACCESS_TOKEN_KEY_IN_LC } from '../constants/index';
 import { IRecord } from '../interfaces/index';
 
 
 const Record: React.FunctionComponent<IRecord> = (props: IRecord) => {
 	const [isHovered, setIsHovered] = useState(false);
+	const [passVal, setPassVal] = useState(props.password);
+
+	const accessToken: string | null = localStorage.getItem(ACCESS_TOKEN_KEY_IN_LC);
 
 	const dispatch = useDispatch();
 
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+		setPassVal(e.target.value.trim());
+	}
+
+	const handleUpdate = (e: MouseEvent): void => {
+		e.preventDefault();
+		dispatch(updateRecord({ recordId: props._id, newPassword: crypter.encrypt(passVal), accessToken }));
+	}
+
 	const handleDelete = (e: MouseEvent): void => {
 		e.preventDefault();
-		const accessToken: string | null = localStorage.getItem(ACCESS_TOKEN_KEY_IN_LC);
 		dispatch(deleteRecord({ id: props._id, accessToken }));
 	}
 
 	return (
-		<div>
+		<form>
 			<span>{props.title}</span>
 			<input 
 				type={isHovered ? 'text' : 'password'}
-				value={props.password}
-				readOnly // change later
+				value={passVal}
+				onChange={handleChange}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			/>
+			<button
+				onClick={handleUpdate}
+				type="submit"
+			>
+				Update
+			</button>
 			<button
 				onClick={handleDelete}
 				type="submit"
 			>
 				Delete
 			</button>
-		</div>
+		</form>
 	);
 }
 

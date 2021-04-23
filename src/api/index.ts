@@ -37,7 +37,14 @@ export class Api {
 	}
 
 	async updateRecord(dto: RecordUpdateDto): Promise<AxiosResponse<any>> {
-		return await axios.patch(`${RECORD_URI}/${dto.recordId}/update`, dto);
+		const { recordId, newPassword, accessToken } = dto;
+		return await axios.patch(`${RECORD_URI}/${recordId}/update`, {
+			recordId, newPassword,
+		}, {
+			headers: {
+				'Authorization': `Bearer ${accessToken}`,
+			}
+		});
 	}
 
 	async deleteRecord(dto: RecordDeleteDto): Promise<AxiosResponse<any>> {

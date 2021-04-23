@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import crypter from '../service/crypter';
 import api from '../api/index';
-import { GetUserInfoDto, RecordSaveDto, RecordDeleteDto } from '../dto/index';
+import { GetUserInfoDto, RecordSaveDto, RecordUpdateDto, RecordDeleteDto } from '../dto/index';
 import { IUser, IRecord } from '../interfaces/index';
 
 const initialUserState: IUser = {
@@ -25,6 +25,17 @@ const slice = createSlice({
 				records: [...state.records, ...[action.payload]],
 			}
 		},
+		updateRecordSuccess: (state, action) => {
+			return {
+				...state,
+				records: state.records.map((record: IRecord) => {
+					if (record._id === action.payload._id) {
+						return {...record, password: action.payload.newPassword }
+					}
+					return record;
+				})
+			}
+		},
 		deleteRecordSuccess: (state, action) => {
 			return {
 				...state,
@@ -40,6 +51,7 @@ export default slice.reducer;
 
 const { fetchUserDataSuccess } = slice.actions;
 const { saveRecordSuccess } = slice.actions;
+const { updateRecordSuccess } = slice.actions;
 const { deleteRecordSuccess } = slice.actions;
 
 export const fetchUserData = (dto: GetUserInfoDto) => async (dispatch: any) => {
@@ -62,6 +74,16 @@ export const saveRecord = (dto: RecordSaveDto) => async (dispatch: any) => {
 		data.password = crypter.decrypt(data.password);
 		dispatch(saveRecordSuccess(data))
 	} catch(error) {
+		console.error(error.message);
+	}
+}
+
+export const updateRecord = (dto: RecordUpdateDto) => async (dispatch: any) => {
+	try {
+		const {data: { _id, password } } = await api.updateRecord(dto);
+		const decryptedPassword = crypter.decrypt(password);
+		dispatch(updateRecordSuccess({_id, newPassword: decryptedPassword}))
+	} catch (error) {
 		console.error(error.message);
 	}
 }
