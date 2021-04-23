@@ -11,6 +11,7 @@ const Dashboard: React.FunctionComponent = () => {
 	const userStoreData = useSelector((state: IRootState) => state.userData);
 
 	const [userInfo, setUserInfo] = useState(userStoreData);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		handleFetchData();
@@ -33,13 +34,18 @@ const Dashboard: React.FunctionComponent = () => {
 			return;
 		}
 
-		dispatch(fetchUserData({ email: userEmail, accessToken: token }));
+		setIsLoading(true);
+		await dispatch(fetchUserData({ email: userEmail, accessToken: token }));
+		setIsLoading(false);
 	}
 
 	return (
 		<React.Fragment>
 			<h1>Dashboard</h1>
-			<Table records={userInfo.records} />
+			{ isLoading 
+				? 'LOADING AND DESCRYPTING PASSWORDS...' 
+				: <Table records={userInfo.records} />
+			}
 		</React.Fragment>
 	)
 }

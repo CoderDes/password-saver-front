@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import crypter from '../service/crypter';
 import { saveRecord } from '../redux/user.slice';
 import { ACCESS_TOKEN_KEY_IN_LC } from '../constants/index';
 import { IRootState } from '../interfaces';
@@ -28,7 +29,7 @@ const AddRecords: React.FunctionComponent = () => {
 
 		dispatch(saveRecord({
 			title: titleVal,
-			password: passVal,
+			password: crypter.encrypt(passVal),
 			userId,
 			accessToken,
 		}));
