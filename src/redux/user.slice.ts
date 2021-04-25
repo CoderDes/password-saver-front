@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import crypter from '../service/crypter';
+import crypterWorker from '../worker/crypter';
 import api from '../api/index';
 import { GetUserInfoDto, RecordSaveDto, RecordUpdateDto, RecordDeleteDto } from '../dto/index';
 import { IUser, IRecord } from '../interfaces/index';
@@ -58,11 +59,14 @@ export const fetchUserData = (dto: GetUserInfoDto) => async (dispatch: any) => {
 	try {
 		const { data } = await api.getUserInfo(dto);
 
-		data.records = data.records.map((record: IRecord) => {
-			record.password = crypter.decrypt(record.password);
-			return record;
-		})
-		dispatch(fetchUserDataSuccess(data));
+		const decryptedRecords = await Promise.all(
+			data.records.map(async (record: IRecord) => {
+				record.password = await crypterWorker.decryptWorker(record.password);
+				return record;
+			})
+		);
+
+		dispatch(fetchUserDataSuccess({ ...data, records: decryptedRecords }));
 	} catch(error) {
 		console.error(error.message);
 	}
