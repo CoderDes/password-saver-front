@@ -25,17 +25,22 @@ const AddRecords: React.FunctionComponent = () => {
 
 	const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) =>  {
 		e.preventDefault();
+
 		const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY_IN_LC);
-		const encryptedPassword = await crypterWorker.encryptWorker(passVal);
+		const title = titleVal;
+		const decryptedPassword = passVal;
+
+		setTitleValue('');
+		setPassVal('');
+
+		const encryptedPassword = await crypterWorker.encryptWorker(decryptedPassword);
+
 		await dispatch(saveRecord({
-			title: titleVal,
+			title,
 			password: encryptedPassword,
 			userId,
 			accessToken,
 		}));
-
-		setTitleValue('');
-		setPassVal('');
 	}
  
 	return (
