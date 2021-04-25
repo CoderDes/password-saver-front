@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 
 import { 
@@ -95,7 +95,13 @@ const AuthPage: React.FunctionComponent<AuthProps> = (props: AuthProps) => {
 						type="submit"
 					>
 						{ props.isLogin ?  'Login' : 'Register' }
-					</Button> 
+					</Button>	
+					<Link
+						style={authFormStyles.link}
+						to={props.isLogin ? '/register' : '/'}
+					>
+						{props.isLogin ? 'Create account' : 'Sign in'}
+					</Link>
 				</Form>
 			</Formik>
 		</React.Fragment>

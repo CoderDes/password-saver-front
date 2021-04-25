@@ -27,6 +27,9 @@ const authFormStyles = {
 	button: {
 		maxWidth: '20%',
 		marginTop: '20px',
+	},
+	link: {
+		marginTop: '20px',
 	}
 }
 
