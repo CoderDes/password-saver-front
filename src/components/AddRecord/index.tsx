@@ -21,7 +21,7 @@ const AddRecords: React.FunctionComponent = () => {
 
 
 	const hangleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>): void => {
-		setTitleValue(e.currentTarget.value.trim());
+		setTitleValue(e.currentTarget.value);
 	}
 
 	const hangleChangePass = (e: React.ChangeEvent<HTMLInputElement>): void =>  {
@@ -56,7 +56,7 @@ const AddRecords: React.FunctionComponent = () => {
 					type='text' 
 					value={titleVal}
 					onChange={hangleChangeTitle}
-					placeholder='Enter title of resource'
+					placeholder='Enter title'
 				/>
 				<div className='wrapper wrapper--password'>
 					<input
@@ -64,7 +64,7 @@ const AddRecords: React.FunctionComponent = () => {
 						type={ isShowPass ? 'text' : 'password' } 
 						value={passVal}
 						onChange={hangleChangePass}
-						placeholder='Enter password of resource'
+						placeholder='Enter password'
 					/>
 					<FontAwesomeIcon
 						className="icon"

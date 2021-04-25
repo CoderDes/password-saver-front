@@ -15,6 +15,11 @@ const AddRecordWrapper = styled.form`
 
 	.field {
 		border: 1px solid transparent;
+		font-family: monospace;
+
+		&--title {
+			margin-right: 20px;
+		}
 
 		&:hover {
 			border-bottom: 1px solid black;

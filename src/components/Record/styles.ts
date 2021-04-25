@@ -6,8 +6,10 @@ const StyledRow = styled.form`
 	margin-top: 10px;
 
 	.field {
+		font-family: monospace;
 		width: 80%;
 		margin: 0;
+		text-align: left;
 
 		&--title {
 			width: 30%;
