@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import crypter from '../service/crypter';
 import crypterWorker from '../worker/crypter';
 import api from '../api/index';
 import { GetUserInfoDto, RecordSaveDto, RecordUpdateDto, RecordDeleteDto } from '../dto/index';
@@ -75,7 +74,7 @@ export const fetchUserData = (dto: GetUserInfoDto) => async (dispatch: any) => {
 export const saveRecord = (dto: RecordSaveDto) => async (dispatch: any) => {
 	try {
 		const { data } = await api.saveRecord(dto);
-		data.password = crypter.decrypt(data.password);
+		data.password = await crypterWorker.decryptWorker(data.password);
 		dispatch(saveRecordSuccess(data))
 	} catch(error) {
 		console.error(error.message);
@@ -85,7 +84,7 @@ export const saveRecord = (dto: RecordSaveDto) => async (dispatch: any) => {
 export const updateRecord = (dto: RecordUpdateDto) => async (dispatch: any) => {
 	try {
 		const {data: { _id, password } } = await api.updateRecord(dto);
-		const decryptedPassword = crypter.decrypt(password);
+		const decryptedPassword = await crypterWorker.decryptWorker(password);
 		dispatch(updateRecordSuccess({_id, newPassword: decryptedPassword}))
 	} catch (error) {
 		console.error(error.message);

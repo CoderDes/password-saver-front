@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import crypter from '../service/crypter';
+import crypterWorker from '../worker/crypter';
 import { saveRecord } from '../redux/user.slice';
 import { ACCESS_TOKEN_KEY_IN_LC } from '../constants/index';
 import { IRootState } from '../interfaces';
@@ -26,10 +26,10 @@ const AddRecords: React.FunctionComponent = () => {
 	const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) =>  {
 		e.preventDefault();
 		const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY_IN_LC);
-
+		const encryptedPassword = await crypterWorker.encryptWorker(passVal);
 		await dispatch(saveRecord({
 			title: titleVal,
-			password: crypter.encrypt(passVal),
+			password: encryptedPassword,
 			userId,
 			accessToken,
 		}));

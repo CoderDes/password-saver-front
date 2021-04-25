@@ -1,7 +1,7 @@
 import React, { MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import crypter from '../service/crypter';
+import crypterWorker from '../worker/crypter';
 import { updateRecord, deleteRecord } from '../redux/user.slice';
 import { ACCESS_TOKEN_KEY_IN_LC } from '../constants/index';
 import { IRecord } from '../interfaces/index';
@@ -19,9 +19,10 @@ const Record: React.FunctionComponent<IRecord> = (props: IRecord) => {
 		setPassVal(e.target.value.trim());
 	}
 
-	const handleUpdate = (e: MouseEvent): void => {
+	const handleUpdate = async (e: MouseEvent): Promise<void> => {
 		e.preventDefault();
-		dispatch(updateRecord({ recordId: props._id, newPassword: crypter.encrypt(passVal), accessToken }));
+		const encryptedPassword = await crypterWorker.encryptWorker(passVal);
+		dispatch(updateRecord({ recordId: props._id, newPassword: encryptedPassword, accessToken }));
 	}
 
 	const handleDelete = (e: MouseEvent): void => {
