@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import AuthPage from '../pages/Auth';
+import AuthPage from '../pages/Auth/index';
 import Dashboard from '../pages/Dashboard';
 import NotFound from '../pages/NotFound';
 

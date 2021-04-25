@@ -2,14 +2,16 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useHistory } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import * as Yup from 'yup';
 
 import { 
 	ACCESS_TOKEN_KEY_IN_LC, 
 	USER_EMAIL_KEY_IN_LC 
-} from '../constants/index';
-import { IAuth } from '../interfaces/index';
-import api from '../api';
+} from '../../constants/index';
+import { IAuth } from '../../interfaces/index';
+import api from '../../api';
+
+import Button from '../../components/Button/index';
+import authFormStyles from './style';
 
 interface AuthFormValues {
 	email: string;
@@ -57,23 +59,43 @@ const AuthPage: React.FunctionComponent<AuthProps> = (props: AuthProps) => {
 					}
 				}}
 			>
-				<Form>
-					<label htmlFor="email">Email</label>
-					<Field 
-						id='email'
-						name='email'
-						type='email'
-						placeholder="Enter your email"
-					/>
-					<label htmlFor="password">Password</label>
-					<Field 
-						id='password'
-						name='password'
-						type="password"
-					/>
-					<button type="submit">
+				<Form style={authFormStyles.form}>
+					<div style={authFormStyles.fieldWrapper}>
+						<label 
+							htmlFor="email"
+							style={authFormStyles.fieldLabel}
+						>
+							Email
+						</label>
+						<Field
+							style={authFormStyles.field}
+							id='email'
+							name='email'
+							type='email'
+							placeholder="Enter your email"
+						/>
+					</div>
+					<div style={authFormStyles.fieldWrapper}>
+						<label 
+							htmlFor="password"
+							style={authFormStyles.fieldLabel}
+						>
+							Password
+						</label>
+						<Field 
+							style={authFormStyles.field}
+							id='password'
+							name='password'
+							type="password"
+							placeholder="Enter your password"
+						/>
+					</div>
+					<Button
+						style={authFormStyles.button} 
+						type="submit"
+					>
 						{ props.isLogin ?  'Login' : 'Register' }
-					</button> 
+					</Button> 
 				</Form>
 			</Formik>
 		</React.Fragment>
