@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import Table from '../components/Table';
+import Loader from '../components/Loader';
 import { fetchUserData } from '../redux/user.slice';
 import { ACCESS_TOKEN_KEY_IN_LC, USER_EMAIL_KEY_IN_LC} from '../constants/index';
 import { IRootState } from '../interfaces';
@@ -48,8 +49,10 @@ const Dashboard: React.FunctionComponent = () => {
 		<React.Fragment>
 			<h1>Dashboard</h1>
 			{ isLoading 
-				? 'LOADING AND DESCRYPTING PASSWORDS...' 
-				: <Table records={userInfo.records} />
+				? 	<Loader 
+						loaderTitle="fetching and decrypting passwords"
+				  	/>
+				: 	<Table records={userInfo.records} />
 			}
 		</React.Fragment>
 	)
