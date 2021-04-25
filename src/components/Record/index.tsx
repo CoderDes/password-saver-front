@@ -1,10 +1,13 @@
 import React, { MouseEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import crypterWorker from '../worker/crypter';
-import { updateRecord, deleteRecord } from '../redux/user.slice';
-import { ACCESS_TOKEN_KEY_IN_LC } from '../constants/index';
-import { IRecord } from '../interfaces/index';
+import crypterWorker from '../../worker/crypter';
+import { updateRecord, deleteRecord } from '../../redux/user.slice';
+import { ACCESS_TOKEN_KEY_IN_LC } from '../../constants/index';
+import { IRecord } from '../../interfaces/index';
+
+import StyledRow from './styles';
+import Button from '../Button/index';
 
 
 const Record: React.FunctionComponent<IRecord> = (props: IRecord) => {
@@ -31,28 +34,33 @@ const Record: React.FunctionComponent<IRecord> = (props: IRecord) => {
 	}
 
 	return (
-		<form>
-			<span>{props.title}</span>
-			<input 
+		<StyledRow>
+			<span className='field field--title'>{props.title}</span>
+			<input
+				className='field field--password'
 				type={isHovered ? 'text' : 'password'}
 				value={passVal}
 				onChange={handleChange}
 				onMouseEnter={() => setIsHovered(true)}
 				onMouseLeave={() => setIsHovered(false)}
 			/>
-			<button
-				onClick={handleUpdate}
-				type="submit"
-			>
-				Update
-			</button>
-			<button
-				onClick={handleDelete}
-				type="submit"
-			>
-				Delete
-			</button>
-		</form>
+			<div className="btn-block">
+				<Button
+					className='btn'
+					onClick={handleUpdate}
+					type="submit"
+				>
+					Update
+				</Button>
+				<Button
+					className='btn'
+					onClick={handleDelete}
+					type="submit"
+				>
+					Delete
+				</Button>
+			</div>
+		</StyledRow>
 	);
 }
 

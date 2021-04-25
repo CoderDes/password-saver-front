@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import Table from '../components/Table';
-import Loader from '../components/Loader';
 import { fetchUserData } from '../redux/user.slice';
 import { ACCESS_TOKEN_KEY_IN_LC, USER_EMAIL_KEY_IN_LC} from '../constants/index';
 import { IRootState } from '../interfaces';
+
+import Header from '../components/Header/index';
+import Table from '../components/Table/index';
+import Loader from '../components/Loader';
 
 const Dashboard: React.FunctionComponent = () => {
 	const history = useHistory();
@@ -45,15 +47,35 @@ const Dashboard: React.FunctionComponent = () => {
 		setIsLoading(false);
 	}
 
+	const handleLogout = () => {
+		localStorage.removeItem(ACCESS_TOKEN_KEY_IN_LC);
+		history.push('/');
+	}
+
 	return (
 		<React.Fragment>
-			<h1>Dashboard</h1>
-			{ isLoading 
-				? 	<Loader 
-						loaderTitle="fetching and decrypting passwords"
-				  	/>
-				: 	<Table records={userInfo.records} />
-			}
+			<Header 
+				pageTitle="Dashboard"
+				userEmail={userInfo.email}
+				handleLogout={handleLogout}
+			/>
+			<div 
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					justifyContent: 'center',
+					alignItems: 'center',
+					width: '100%',
+					height: '70%',
+				}}
+			>
+				{ isLoading 
+					? 	<Loader 
+							loaderTitle="fetching and decrypting passwords"
+						/>
+					: 	<Table records={userInfo.records} />
+				}
+			</div>
 		</React.Fragment>
 	)
 }

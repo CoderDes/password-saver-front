@@ -1,14 +1,21 @@
 import React from 'react';
 
-import Record from './Record';
-import { IRecord } from '../interfaces/index';
+import StyledList from './style';
+import Record from '../Record/index';
+import { IRecord } from '../../interfaces/index';
 
 interface RecordListProps {
 	records: IRecord[];
 }
 
 const RecordList: React.FunctionComponent<RecordListProps> = (props: RecordListProps) => (
-	<ul>
+	<StyledList>
+		<li key={Math.random()}>
+			<div className="block-title">
+				<span className="title">service title</span>
+				<span className="title">password</span>
+			</div>
+		</li>
 		{
 			props.records.map((record: IRecord) => {
 				const {_id, title, password, userId, createdAt} = record;
@@ -25,7 +32,7 @@ const RecordList: React.FunctionComponent<RecordListProps> = (props: RecordListP
 				)
 			})
 		}
-	</ul>
+	</StyledList>
 );
 
 export default RecordList;

@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import crypterWorker from '../worker/crypter';
-import { saveRecord } from '../redux/user.slice';
-import { ACCESS_TOKEN_KEY_IN_LC } from '../constants/index';
-import { IRootState } from '../interfaces';
+import crypterWorker from '../../worker/crypter';
+import { saveRecord } from '../../redux/user.slice';
+import { ACCESS_TOKEN_KEY_IN_LC } from '../../constants/index';
+import { IRootState } from '../../interfaces';
+
+import AddRecordWrapper from './style';
+import Button from '../Button/index';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 const AddRecords: React.FunctionComponent = () => {
 	const userId: string = useSelector((state: IRootState) => state.userData._id);
@@ -44,35 +49,38 @@ const AddRecords: React.FunctionComponent = () => {
 	}
  
 	return (
-		<form>
-			<input 
-				type='text' 
-				value={titleVal}
-				onChange={hangleChangeTitle}
-			/>
-			<div>
-				<input 
-					type={ isShowPass ? 'text' : 'password' } 
-					value={passVal}
-					onChange={hangleChangePass}
+		<AddRecordWrapper>
+			<div className="wrapper wrapper--fields">
+				<input
+					className='field field--title'
+					type='text' 
+					value={titleVal}
+					onChange={hangleChangeTitle}
+					placeholder='Enter title of resource'
 				/>
-				<div 
-					style={{
-						width: '10px', height: '10px', backgroundColor: 'lightcoral',
-					}}
-					onMouseDown={() => setIsShowPass(true)}
-					onMouseUp={() => setIsShowPass(false)}
-				>
-					icon
+				<div className='wrapper wrapper--password'>
+					<input
+						className='field field--password'
+						type={ isShowPass ? 'text' : 'password' } 
+						value={passVal}
+						onChange={hangleChangePass}
+						placeholder='Enter password of resource'
+					/>
+					<FontAwesomeIcon
+						className="icon"
+						icon={faEye}
+						onMouseDown={() => setIsShowPass(true)}
+						onMouseUp={() => setIsShowPass(false)}
+					/>
 				</div>
 			</div>
-			<button 
+			<Button
 				type="submit"
 				onClick={onSubmit}
 			>
 				Save
-			</button>
-		</form>
+			</Button>
+		</AddRecordWrapper>
 	);
 };
 
